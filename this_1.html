@@ -1,0 +1,42 @@
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+<!-- from mutedsolutions.com
+
+There are only 5 rules you need to understand, to master the value of "this" in any function and any object in JavaScript. Here's the kicker, though: these rules are all based on how you invoke the function!
+
+    Raw function calls
+    Method calls on objects
+    Function calls with "new"
+    Using .call and .apply to invoke a function
+    Function binding with .bind
+
+
+-->
+
+
+<!--
+	1. Simple Function Invocation - eg: doSomething()
+
+-->
+
+<script>
+function doStuff(){
+    console.log("I'm doing things!");
+    console.log(this);
+  }
+
+  doStuff();
+</script>
+
+<!--
+when run in a browser the above function call will resolve "this" to the "window" object (unless "use strict" is on).
+when run in a different environment this will be different. In NodeJS there is no "window" object.  There is, however, a "global" object that works similarly to the "window" object in a browser. 
+-->
+
+
+</body>
+</html>
