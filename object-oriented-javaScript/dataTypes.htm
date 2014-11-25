@@ -1,0 +1,46 @@
+
+
+<html>
+<head>
+	<title>datatypes</title>
+</head>
+<body>
+
+<script type="text/javascript">
+	//1. 'number' is a primitive type.
+	var n = 1;
+	console.log('1. ' + typeof n);
+
+	//2. octal numbers start with a 0
+	var octal = 0377;
+	console.log('2. ' + typeof octal);
+	console.log('2. 0377=' + octal);
+
+	//3. hex numbers start with a 0x
+	var hex = 0xff;
+	console.log('3. ' + typeof hex);
+	console.log('3. 0xff=' + hex);
+
+	//4. exponent literals: 1e1 (also 1e+1 or 1E1 or 1E+1) is the operand plus one zero (ie: 10)
+	var n2 = 2e4;
+	console.log('4. ' + typeof n2);
+	console.log('4. 2e4=' + n2);
+
+	//5. NaN is (obviously) a number too
+	console.log('5. ' + typeof NaN);
+
+
+
+	//6 almost everything converts to true, except false, 0 ,'' ,null, undefined ,
+	var b = 'one';
+	console.log('double negation of string to boolean' + !!b); //!converts to a boolean and negates (the true is no false) and the double negation gets us back to true again.	
+	console.log('5. ' + typeof !!b);
+
+
+
+
+
+</script>
+
+</body>
+</html>
