@@ -1,0 +1,22 @@
+<script>
+console.log('start');
+
+// self invoking function 
+var a = function( ) {
+     function someSetup() {
+     	console.log('someSetup runs...')
+        var setup = 'done';
+     }
+
+     function actualWork ( ) {
+     	console.log('actual work runs...')
+     }
+
+     someSetup();
+     return actualWork; // note: no parenthesis ‘cos it’s retuning a function reference, not the result.
+}( );
+
+
+</script>
+
+so var 'a' is assigned the function ('cos functions are data) 'actual work', which we can then invoke manually with a()
