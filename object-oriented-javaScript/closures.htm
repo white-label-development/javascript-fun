@@ -1,0 +1,37 @@
+<script>
+	// closures
+
+	//lexical scope: functions create their env when they are defined, 
+	//not when they are executed.
+
+	function f1()
+	{
+		var a = 1;
+		f2();
+	}
+
+	function f2() {return a;}
+
+	//f1(); //a is not defined when f2 created it's environment
+
+	//note: I would think that f1 would fail as f2 isn't defined before it, but (i think) the f1 environment is updated. we can do this manually, eg: 
+	// >>> delete f2
+	// var f2 = function() {return a * 2; }
+	//and f1's call to a will now x2 - it's environment has updated as we change f2 ie: it's not a fixed snapshot.
+
+
+	//creating a closure (scope chain breakout)
+	function f() {
+		var b = "b";
+		return function() {
+			return b;
+		}
+	}
+
+	//>>> b // b is not defined  - it's  not in global, it's in f()
+	//f() returns an anonyous function
+
+	var n = f(); //
+
+
+</script>
