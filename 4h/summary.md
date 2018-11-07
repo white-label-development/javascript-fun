@@ -43,3 +43,25 @@ and create (transpile?) to 2015
 });
 ```
 
+demo: ```$ parcel index.html``` in /4h/index.html
+
+
+### Module Resolution
+
+The modern way to organise your javascript applications is to separate your code into modules, to be
+exported and then imported where needed.
+
+```export default greet;``` exports the greet() function  (see /4h/greeter.ts)
+
+```
+import greet from './greeter'; //import
+
+greet(); //exec
+``` 
+exports (see /4h/greeter.ts)
+
+demo:```$ parcel build index.html``` created production build
+
+
+
+
