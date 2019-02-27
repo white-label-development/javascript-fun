@@ -11,5 +11,7 @@ Grab node (for npm), add Vuew.js devtools for chrome.
 
 Create via gui `$ vue ui` or with cli:
 ```
-$ view create testProject
+$ vue create testProject
+$ cd testProject
+$ nmp run serve
 ```
