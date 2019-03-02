@@ -249,3 +249,10 @@ alert( meetup.date.getDate() ); // now works!
 ```
 
 ref: https://javascript.info/json
+
+
+#### More on Functions
+
+quick - rebase faff example 1
+quick - rebase faff example 2
+quick - rebase faff example 3
