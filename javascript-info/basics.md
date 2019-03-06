@@ -383,5 +383,83 @@ Object.setPrototypeOf(rabbit, {}); // change the prototype of rabbit to {}
 
 #### Classes
 
+functional class pattern
+```
+function User(name, birthday) {
+  // only visible from other methods inside User
+  function calcAge() {
+    return new Date().getFullYear() - birthday.getFullYear();
+  }
+
+  this.sayHi = function() {
+    alert(`${name}, age:${calcAge()}`);
+  };
+}
+
+let user = new User("John", new Date(2000, 0, 1));
+user.sayHi(); // John, age:17
+``
+
+factory class pattern
+```
+function User(name, birthday) {
+  // only visible from other methods inside User
+  function calcAge() {
+    return new Date().getFullYear() - birthday.getFullYear();
+  }
+
+  return {
+    sayHi() {
+      alert(`${name}, age:${calcAge()}`);
+    }
+  };
+}
+
+let user = User("John", new Date(2000, 0, 1));
+user.sayHi(); // John, age:17
+```
+
+Prototype-based classes
+(Prototype-based classes are the most important and generally the best. Functional and factory class patterns are rarely used in practice.)
+```
+function User(name, birthday) {
+  this._name = name; //internal properties and methods are prepended with an underscore 
+  this._birthday = birthday;
+}
+
+User.prototype._calcAge = function() {
+  return new Date().getFullYear() - this._birthday.getFullYear();
+};
+
+User.prototype.sayHi = function() {
+  alert(`${this._name}, age:${this._calcAge()}`);
+  //methods are lexically not inside function User, they do not share a common lexical environment. 
+  //If we declare variables inside function User, then they won’t be visible to methods added like this one.
+};
+
+let user = new User("John", new Date(2000, 0, 1));
+user.sayHi(); // John, age:17
+```
+The constructor User only initializes the current object state. Methods are added to User.prototype.
 
 
+
+The "class"  construct allows to define prototype-based classes and some new features.
+
+```
+class User {
+
+  constructor(name) {
+    this.name = name;
+  }
+
+  sayHi() {
+    alert(this.name);
+  }
+
+}
+
+let user = new User("John");
+user.sayHi();
+```
+May required a polyfill still.
