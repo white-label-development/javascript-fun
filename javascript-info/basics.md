@@ -463,3 +463,64 @@ let user = new User("John");
 user.sayHi();
 ```
 May required a polyfill still.
+ 
+Inheritance from Animal `class Rabbit extends Animal { ... } `
+
+use `instanceof` to check whether an object belongs to a class
+
+`alert( rabbit instanceof Rabbit );`
+
+
+#### Mixins
+
+ a mixin provides methods that implement a certain behavior, but we do not use it alone, we use it to add the behavior to other classes.
+
+ #### Error handling
+
+To catch an exception inside a scheduled function, `try..catch` must be inside that function:
+```
+setTimeout(function() {
+  try {
+    noSuchVariable; // try..catch handles the error!
+  } catch {
+    alert( "error is caught here!" );
+  } finally {
+  alert( 'finally' );
+  }
+}, 1000);
+```
+e.name, e.message, e.stack. `if (e.name == "SyntaxError") ...`
+
+Catch should only process errors that it knows and “rethrow” all others.
+
+`throw e; // rethrow`
+
+Note: The finally clause works for any exit from try..catch. That includes an explicit return, even in the try block.
+
+Global catch (in a browser)
+```
+  window.onerror = function(message, url, line, col, error) {
+  // ...
+};
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
