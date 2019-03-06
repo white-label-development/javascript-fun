@@ -253,6 +253,135 @@ ref: https://javascript.info/json
 
 #### More on Functions
 
-quick - rebase faff example 1
-quick - rebase faff example 2
-quick - rebase faff example 3
+Rest paramteters (note: The rest parameters must be at the end)
+```
+function showName(firstName, lastName, ...titles) {
+  alert( firstName + ' ' + lastName ); // Julius Caesar
+
+  // the rest go into titles array
+  // i.e. titles = ["Consul", "Imperator"]
+  alert( titles[0] ); // Consul
+  alert( titles[1] ); // Imperator
+  alert( titles.length ); // 2
+}
+
+showName("Julius", "Caesar", "Consul", "Imperator"); // the variable prefixed with ... "bundles" the args into an array
+```
+
+The Spread operator does the opposite
+```
+let arr = [3, 5, 1];
+alert( Math.max(...arr) ); // 5 (spread turns array into a list of arguments)
+```
+
+Also, the spread operator can be used to merge arrays:
+```
+let arr = [3, 5, 1];
+let arr2 = [8, 9, 15];
+
+let merged = [0, ...arr, 2, ...arr2];
+
+alert(merged); // 0,3,5,1,2,8,9,15 (0, then arr, then 2, then arr2)
+```
+
+#### Closure
+
+A variable is a property of a special internal object, associated with the currently executing block/function/script.
+
+Working with variables is actually working with the properties of that object.
+
+NOTE: var variables are either function-wide or global, they are visible through blocks.
+
+Great tasks here: https://javascript.info/closure
+
+Jacascript modules have their own lexical environment
+
+```
+<script type="module">
+  let x = 5;
+</script>
+
+<script type="module">
+  alert(window.x); // undefined
+  alert(x); // Error: undeclared variable
+</script>
+```
+
+##### completed "Advanced working with functions" but it needs revisiting again. 
+
+#### Property Accessors
+
+```
+let user = {
+  name: "John",
+  surname: "Smith",
+
+  get fullName() {
+    return `${this.name} ${this.surname}`;
+  },
+
+  set fullName(value) {
+    [this.name, this.surname] = value.split(" ");
+  }
+};
+
+// set fullName is executed with the given value.
+user.fullName = "Alice Cooper";
+
+alert(user.name); // Alice
+alert(user.surname); // Cooper
+```
+
+
+#### Prototypal inheritance
+
+```
+let animal = {
+  eats: true
+};
+let rabbit = {
+  jumps: true
+};
+
+rabbit.__proto__ = animal; //__proto__ is not the same as [[Prototype]]. That's a getter/setter for it. 
+//Also: Object.getPrototypeOf/Object.setPrototypeOf/Object.create - these should be used instead of __proto__ (the modern way)
+```
+
+`this` is not affected by prototypes at all. No matter where the method is found: in an object or its prototype. In a method call, this is always the object before the dot.
+
+Alt syntax (Setting Rabbit.prototype = animal literally states the following: "When a new Rabbit is created, assign its \[\[Prototype]] to animal".)
+```
+let animal = {
+  eats: true
+};
+
+function Rabbit(name) {
+  this.name = name;
+}
+
+Rabbit.prototype = animal;
+
+let rabbit = new Rabbit("White Rabbit"); //  rabbit.__proto__ == animal
+
+alert( rabbit.eats ); // true
+```
+
+The modern way:
+```
+let animal = {
+  eats: true
+};
+
+let rabbit = Object.create(animal); // create a new object with animal as a prototype
+
+alert(rabbit.eats); // true
+alert(Object.getPrototypeOf(rabbit) === animal); // get the prototype of rabbit
+
+Object.setPrototypeOf(rabbit, {}); // change the prototype of rabbit to {}
+``
+
+
+#### Classes
+
+
+
