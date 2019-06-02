@@ -1,5 +1,6 @@
 import { Hero } from './hero';
 
+//now unused as in-memory-data.service is uses instead.
 export const HEROES: Hero[] = [
   { id: 11, name: 'Mr. Nice' },
   { id: 12, name: 'Narco' },
