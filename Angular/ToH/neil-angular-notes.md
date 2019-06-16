@@ -53,3 +53,23 @@ https://angular.io/tutorial/toh-pt6
 The *ngFor can't do anything with an Observable. But there's also a pipe character (|) followed by async, which identifies Angular's AsyncPipe.
 
 The AsyncPipe subscribes to an Observable automatically so you won't have to do so in the component class."
+
+#### Jokes Notes
+
+We can create local template variables by adding variables starting with the # character on any
+element in our template. 
+```
+<input type="text" class="form-control" placeholder="Enter the punchline" #punchline>
+<button type="button" class="btn btn-primary" (click)="createJoke(setup.value, punchline.value)">Create</button>
+```
+
+Use EventEmitters to emit events. So given a class with an output declaration
+
+ `@Output() jokeCreated = new EventEmitter<Joke>();` and template `<joke-form (jokeCreated)="addJoke($event)"></joke-form>`
+
+ we can emit (see below) and the listener has their own function that responds to the event (`addJoke()`)
+ ```
+createJoke(setup: string, punchline: string) {
+    this.jokeCreated.emit(new Joke(setup, punchline));
+}
+ ```

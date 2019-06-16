@@ -10,6 +10,7 @@ export class Joke {
     }
 
     toggle() {
+        console.log('joke toggle');
         this.hide = !this.hide;
     }
 }

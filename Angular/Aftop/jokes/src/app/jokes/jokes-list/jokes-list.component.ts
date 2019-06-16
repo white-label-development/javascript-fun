@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Joke } from '../../domain/joke';
+import { JokeFormComponent } from '../joke-form/joke-form.component';
 
 @Component({
   selector: 'jokes-list',
@@ -22,8 +23,8 @@ export class JokesListComponent implements OnInit {
     ];
   }
 
-  toggle(joke: Joke) {
-    joke.hide = !joke.hide;
+  addJoke(joke) {
+    this.jokes.unshift(joke);
   }
 
 }
