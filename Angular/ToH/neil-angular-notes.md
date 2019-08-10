@@ -1,29 +1,30 @@
 ## Angular Notes
 
-### Setup
-
-`npm install -g @angular/cli`
-
 ### Angular's template syntax:
 
-Any directive with an * is a structural directive (changes DOM), eg: `*ngFor="let product of products; index as productId"`
+Any directive with an * is a structural directive (changes DOM), eg: `*ngFo=
+r=3D"let product of products; index as productId"`
 
 {{ }} interpolation syntax, eg: `<h3>{{ product.name }}</h3>`
 
-property binding [ ] syntax, eg: `[title]="product.name + ' details'"`, `[routerLink]="['/products', productId]"`
+property binding [ ] syntax, eg: `[title]=3D"product.name + ' details'"`, `=
+[routerLink]=3D"['/products', productId]"`
 
-[(ngModel)] is Angular's two-way data binding syntax., eg: `<input [(ngModel)]="hero.name" placeholder="name"/>`
+[(ngModel)] is Angular's two-way data binding syntax., eg: `<input [(ngMode=
+l)]=3D"hero.name" placeholder=3D"name"/>`
 
-Event binding is done by using ( ) around the event,eg: `<button (click)="share()">Share</button>`
+Event binding is done by using ( ) around the event,eg: `<button (click)=3D=
+"share()">Share</button>`
 
- @Component decorator indicates that the following class is a component. Describes metadata (selector (app-{my-component-name}), templateUrl, styleUrls).
-
+@Component decorator indicates that the following class is a component. Des=
+cribes metadata (selector (app-{my-component-name}), templateUrl, styleUrls=
+).
 
 ### Routing
 app.module.ts imports a RouterModule.
 
-`ng generate module app-routing --flat --module=app` (flat puts the file in src/app)
-
+`ng generate module app-routing --flat --module=3Dapp` (flat puts the file =
+in src/app)
 
 ### Other fundamentals are a todo
 
@@ -36,40 +37,83 @@ cd angular-tour-of-heroes
 ng serve --open
 ```
 
-https://angular.io/tutorial/toh-pt6
-
+...
 
 `ng generate service hero` notice the the @Injectable() decorator
 
+`HeroService.getHeroes()` must have an asynchronous signature of some kind.=
+ It can take a callback. It could return a Promise. It could return an Obse=
+rvable.
 
-`HeroService.getHeroes()` must have an asynchronous signature of some kind. It can take a callback. It could return a Promise. It could return an Observable.
+"In this tutorial, HeroService.getHeroes() will return an Observable in par=
+t because it will eventually use the Angular HttpClient.get method to fetch=
+ the heroes and HttpClient.get() returns an Observable. Observable is one o=
+f the key classes in the RxJS library..."
 
-"In this tutorial, HeroService.getHeroes() will return an Observable in part because it will eventually use the Angular HttpClient.get method to fetch the heroes and HttpClient.get() returns an Observable. Observable is one of the key classes in the RxJS library..."
+### Angular Guide notes
 
-`<li *ngFor="let hero of heroes$ | async" >`
+`{{value}}`
 
-"The $ is a convention that indicates heroes$ is an Observable, not an array.
+`[property]=3D"value"` , eg: [hero]=3D"selectedHero
 
-The *ngFor can't do anything with an Observable. But there's also a pipe character (|) followed by async, which identifies Angular's AsyncPipe.
+`(event) =3D "handler"`, eg: selectHero(hero)
 
-The AsyncPipe subscribes to an Observable automatically so you won't have to do so in the component class."
+`[(ng-model)] =3D "property"`
 
-#### Jokes Notes
+### Unit Testing Angular
 
-We can create local template variables by adding variables starting with the # character on any
-element in our template. 
+https://www.youtube.com/watch?v=3DlTKhB6uAmno
+
+Karma (test runner. looks for ) and Jasmine (testing framework). Protractor=
+ for e2e tests.
+
+describe() //suite
+it() //spec / test
+
+`ng test`
+
+#### Faking Dependencies
+
+manually - such as from a service
 ```
-<input type="text" class="form-control" placeholder="Enter the punchline" #punchline>
-<button type="button" class="btn btn-primary" (click)="createJoke(setup.value, punchline.value)">Create</button>
+let fakeJokeService =3D {
+    getJoke: () =3D> Observable.of('FAKE_JOKE');
+};
+
+let component =3D new JokeComponent(fakeJokeService);
 ```
 
-Use EventEmitters to emit events. So given a class with an output declaration
+##### Jamine Spies
 
- `@Output() jokeCreated = new EventEmitter<Joke>();` and template `<joke-form (jokeCreated)="addJoke($event)"></joke-form>`
+Can intercept existing service / override for tests.
 
- we can emit (see below) and the listener has their own function that responds to the event (`addJoke()`)
- ```
-createJoke(setup: string, punchline: string) {
-    this.jokeCreated.emit(new Joke(setup, punchline));
-}
- ```
+```
+let fakeJokeService =3D jasmine.createSpyObj('jokeService', ['getJoke]);
+
+fakeJokeService.getJoke.and.returnValue(Observable.of('FAKE_JOKE'));
+
+let component =3D new JokeComponent(fakeJokeService);
+```
+
+'expect(jokeService,getJoke).toHaveBeenCalled();`
+'expect(jokeService,getJoke).toHaveBeenCalledWith('Dad Jokes');`
+
+##### TestBed API
+
+Isolated - no HTML template
+
+Shallow - HTML template, no child components
+
+Runs everything in a "zone". zones define an execution context for async op=
+s.
+
+when tests are wrapped in async keyword they run in their own(?) async  tes=
+ting zone (microtask on queue). .whenStable() runs when all tasks complete.
+faekAsync tick() simulates the passage of time until all async request comp=
+lete.
+
+#### e2e tests
+
+test a user story.
+
+`ng e2e`
