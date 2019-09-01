@@ -1,4 +1,4 @@
-## Angular Notes
+# Angular Notes
 
 ### Setup
 
@@ -19,13 +19,26 @@ Event binding is done by using ( ) around the event,eg: `<button (click)="share(
  @Component decorator indicates that the following class is a component. Describes metadata (selector (app-{my-component-name}), templateUrl, styleUrls).
 
 
+?recap?
+
+`{{value}}`
+
+`[property]= "value"` , eg: [hero]="selectedHero"
+
+`(event) = "handler"`, eg: (click) = selectHero(hero)
+
+`[(ng-model)] ="property"`
+
+
+
 ### Routing
 app.module.ts imports a RouterModule.
 
 `ng generate module app-routing --flat --module=app` (flat puts the file in src/app)
 
 
-### Other fundamentals are a todo
+
+
 
 ## Tour of Heroes Notes
 
@@ -41,7 +54,6 @@ https://angular.io/tutorial/toh-pt6
 
 `ng generate service hero` notice the the @Injectable() decorator
 
-
 `HeroService.getHeroes()` must have an asynchronous signature of some kind. It can take a callback. It could return a Promise. It could return an Observable.
 
 "In this tutorial, HeroService.getHeroes() will return an Observable in part because it will eventually use the Angular HttpClient.get method to fetch the heroes and HttpClient.get() returns an Observable. Observable is one of the key classes in the RxJS library..."
@@ -56,22 +68,13 @@ The AsyncPipe subscribes to an Observable automatically so you won't have to do 
 
 
 
-### Angular Guide notes
 
-`{{value}}`
-
-`[property]=3D"value"` , eg: [hero]=3D"selectedHero
-
-`(event) =3D "handler"`, eg: selectHero(hero)
-
-`[(ng-model)] =3D "property"`
-
-### Unit Testing Angular
+## Unit Testing Angular
 
 https://www.youtube.com/watch?v=3DlTKhB6uAmno
 
-Karma (test runner. looks for ) and Jasmine (testing framework). Protractor=
- for e2e tests.
+Karma (test runner. looks for ) and Jasmine (testing framework). 
+Protractor = for e2e tests.
 
 describe() //suite
 it() //spec / test
@@ -82,11 +85,11 @@ it() //spec / test
 
 manually - such as from a service
 ```
-let fakeJokeService =3D {
-    getJoke: () =3D> Observable.of('FAKE_JOKE');
+let fakeJokeService ={
+    getJoke: () => Observable.of('FAKE_JOKE');
 };
 
-let component =3D new JokeComponent(fakeJokeService);
+let component = new JokeComponent(fakeJokeService);
 ```
 
 ##### Jamine Spies
@@ -94,11 +97,11 @@ let component =3D new JokeComponent(fakeJokeService);
 Can intercept existing service / override for tests.
 
 ```
-let fakeJokeService =3D jasmine.createSpyObj('jokeService', ['getJoke]);
+let fakeJokeService = jasmine.createSpyObj('jokeService', ['getJoke]);
 
 fakeJokeService.getJoke.and.returnValue(Observable.of('FAKE_JOKE'));
 
-let component =3D new JokeComponent(fakeJokeService);
+let component = new JokeComponent(fakeJokeService);
 ```
 
 'expect(jokeService,getJoke).toHaveBeenCalled();`
@@ -126,7 +129,7 @@ test a user story.
 
 
 
-#### Typescript
+## Typescript
 
 The process of converting TypeScript into ES5 is called transpilation and we use a tool called `tsc` to
 compile on the command line.
@@ -165,7 +168,7 @@ surrounding code, this will point to in the function body of the fat arrow funct
 
 Destructuring is a way of extracting values into variables from data stored in objects and arrays.
 ```
-const obj = {fn: 'Asim', sn: 'Hussain', age: vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv 39 };
+const obj = {fn: 'Asim', sn: 'Hussain', age: 39 };
 // {prop} is short for {prop: prop}
 const {fn, sn} = obj;
 console.log(fn); // Asim
@@ -301,7 +304,7 @@ doAsyncTask().then(
 
 
 
-#### Jokes Notes
+#### Jokes Notes (AFTOP)
 
 We can create local template variables by adding variables starting with the # character on any
 element in our template. 
