@@ -301,7 +301,9 @@ doAsyncTask().then(
 
 ```
 
+## RxJs
 
+https://angularfirebase.com/lessons/sharing-data-between-angular-components-four-methods/
 
 
 ## AFTOP: Jokes Notes
