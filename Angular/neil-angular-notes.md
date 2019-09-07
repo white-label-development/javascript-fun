@@ -136,6 +136,7 @@ compile on the command line.
 
 ```
 npm install -g typescript
+tsc -v // version
 tsc -
 tsc hello.ts // will transpile into hello.js
 ```
@@ -297,9 +298,210 @@ doAsyncTask().then(
   () => console.log("Task Complete!"),
   () => console.log("Task Errored!"),
 );
+```
+
+
+(pluralsight - typescript getting started)
+
+mod2:
+
+scenario: vscode project
+
+`npm install typescript --save-dev` // i think this will install and update the package.json for us.
+
+uses a webpack dev server as well as webpack for bundling etc.  I am skipping webpack stuff for a later date.
+
+The Typescript project file is tsconfig.json. Can set strict mode, watch etc. `tsc --init` will create a tsconfig with most option commened out, to be tweaked.
+
+`messageElement!.innerText='whatevs';` the exclamation (the non null assertion operator) tells the (strict mode) compiler that we are confident messageElement will not be null, 
+and will allow compilation to continue.
+
+mod3:
+
+Boolean, Number, String, Array, Enum
+
+Void, Null, Undefined, Never, Any
+
+`let someValue: number | string;` //can assign a number or a string. This is called a union type. eg: x: string | null
+
+null and undefined can be assigned to any type, normally (like in javascript) but we can use `--strictNullChecks` compiler option (tsconfig) to only allow them in some situations (via a union type).
+
+`let z: number = GetSomeValue();` // ?example of what?
+
+Type Assertions eg: `<number>` or `(value as number)`
+
+```
+  let value: any = 5;
+  let fixedString: string = (<number>value).toFixed(4);
+```
+
+control flow-based type analysis - compiler will update type based on the control flow (if x === "string" ...) where x is a union type.
+
+mod4:
+
+Type annotations on functions
+
+```
+  function dullFunc(value1, value2) {};
+  //vs
+  function funFunc(score: number, greeting: string = 'hi',  message?: string): string {}
+```
+
+message? is an optional parameter. TS is not like javascript with it's open method parameters system.
+
+`--noImplicitAny` compiler option can be used to enfore type annotations.
+
+
+Arrow functions / lambdas: parameters => function body
+
+```
+  let squareIt = x => x * x;
+  let result = squareit(4); //16
+
+  let adder = (a,b) => a+b;
+  let sum = adder(2,3);
+
+  let greeting = () => console.log('hi');
+  greeting();
+```
+
+```
+  let logger: (value: string) => void;
+  // logger can be any thing (any function I guess) that takes a string input and returns void
+
+  //conditionally assign a function to logger
+  if( score < 0 ) { logger = logError; }
+  else { logger = logMessage; }
+
+  logger(`score was ${score}`);
+
+  // fat arrow
+  const logMessage = (message:string) => console.log(message);
+
+  // traditional
+  function logError(err: string): void { console.error(err); }
+
+  //despite different stype, nboth functions have the same sig.
+```
+
+mod5:
+
+```
+  interface Employee {
+    name: string;
+  }
+
+  interface Manager extends Employee {
+    department: string;
+    scheduleMeeting: (topic: string) => void;
+  }
+
+  let developer = {name: 'bob', title='foo'}
+
+  let newEmployee: Employee = developer;
+  // developer matches the Employee contract so it can be used with being explicity declared as an Employee. As long as the structures match it's ok (duck typing)
+```
+
+interfaces don't compile down to anything in javascript. They are a design tool.
+
+access modifiers: public, private, protected, readonly
+
 
 
 ```
+  class Developer {
+    department: string; // class members are public by default
+    private _title: string;
+
+    get title(): string {
+      return this._title;
+    }
+
+    set title(newTitle: string) {
+      this._title = newTItle.toUpperCase();
+    }
+
+  }
+
+  class WebDeveloper extends Developer {
+    // class inheritance
+  }
+
+  class Engineer implements Employee {
+    // implements an interface
+  }
+```
+
+at the beginning of a typescript files can use triple slash directives, eg: at the top of app.ts add
+
+`/// <reference path="player.ts">`
+
+this will cause player.ts to be compiled when app.ts is compiled = a chain of dependencies. In tsConfig, if we just set `"files": ["./app.ts"]` as long as the chain is complete, all ts files will be compiled. 
+
+```
+  class Developer extends Developer {
+    readonly foo: string;
+    //bar: string // the ctor shortcut does this for us
+    //xxx: string // the ctor shortcut does this for us
+
+    constructor(public bar: string, foo: string, private xxx: string){
+      super(); // call parent's constructor
+      this.foo = foo;
+      //this.bar = bar; //ctor has done this for us
+      //this.xxx = xxx; //ctor has done this for us
+
+    }
+  }
+```
+
+if an access modifer is used in a ctor, typescript will create the property on the class for you.
+
+mod6
+
+Typescript module syntax
+
+Can tell the TypeScript compiler which module system to use (AMD, CommonJS, ES2015 etc). May also need some Loader or Bundler (Node, RequireJS, SystemJS, Webpack etc).
+
+(potentially see Pluralsight: JavaScript Module Fundamentals)
+
+modules can export any types (interfaces, functions, even variables)
+
+```
+  // person.ts
+  export interface Person { } // now available to be imported
+
+  export default class Employee { } //if importing module does not specify specific thing to import, use this
+
+  class Manager { ... } //not accessible outside this module
+```
+
+alternatively export all on one line 
+`export { Person, Employee as StaffMember }; // aliased`
+
+Import in consuming module
+```
+ // player.ts
+ import {Person, StaffMember} from './person'; // a relative reference eg: slash, dot-slash or dot-dot-slash
+
+ import * as Foo from './person'; // all
+
+ import * as $ from 'jquery'; // non-relative imports.
+```
+
+Generally your own code uses relative, and other imported stuff is non-relative. 
+
+Node resolution strategy is set in
+classic: looks for .ts and .d.ts files. for non-relative will start in current and traverse up.
+node: first looks for .ts, .tsx. .d.ts, then reads package.json and looks for typings property. failing that looks for index files
+
+tip: setting `traceResolution: true` in tsConfig `comilerOptions` can be used to debug not found modules. also, tsConfig `baseUrl` for default non-relatve dir to search for modules. `paths` module to array of paths. `rootDirs` for ???.
+
+
+
+
+
+
+
 
 ## RxJs
 
@@ -341,13 +543,19 @@ The JokesListCompent html also contains the JokeForm: `<joke-form (jokeCreated)=
 Again, we have an emit output from JokeFormComponent called jokedCreated `this.jokeCreated.emit(new Joke(setup, punchline));` and JokesListComponent is listening for this event and has bound it to `addJoke($event)`.
 
 
+#### template variables
 
 We can create local template variables by adding variables starting with the # character on any
-element in our template. 
+element in our template.  
 ```
 <input type="text" class="form-control" placeholder="Enter the punchline" #punchline>
+
 <button type="button" class="btn btn-primary" (click)="createJoke(setup.value, punchline.value)">Create</button>
 ```
+The will bind the contact of the text element to the punchline variable. NOTE punchline _is only available as a variable in the template_, we don’t automatically see the variable setup inside the javascript code of our Component class.
+
+In the above example, the button click is using `setup.value` and `punchline.value` in `createJoke()`.
+
 
 Use EventEmitters to emit events. So given a class with an output declaration
 
@@ -359,4 +567,5 @@ createJoke(setup: string, punchline: string) {
     this.jokeCreated.emit(new Joke(setup, punchline));
 }
  ```
- So, that's the basics of the Jokes example. Author's Plunk so far: http://plnkr.co/edit/b0F6Dhb40Hm5zfiamAix?p=preview
+ So, that's the basics of the Jokes example. Author's Plunk so far: http://plnkr.co/edit/b0F6Dhb40Hm5zfiamAix?p=preview  (page 62)
+
