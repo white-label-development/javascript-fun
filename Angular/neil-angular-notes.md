@@ -652,6 +652,13 @@ availability: this.fb.group({
   start: ['', Validators.required],
   end: ['', Validators.required]
 })
+
+// and in the html
+<div formGroupName="availability">
+  <input formControlName="start" />
+  <input formControlName="end" />
+</div>
+
 ```
 
 
