@@ -55,13 +55,13 @@ promise.then(function(response){
 uses api.github.com as a live demo api. good idea!
 
 ```
-angular.module('plunker', []).controller('MainCtrl', function($scope, $http) {
-  
-$http.get("https://api.github.com/users/white-label-development").then(
-  function(response){
-    $scope.user = response.data;
-  });
-$scope.message = 'Hello from ng';
+// [] brackets contain dependencies.
+angular.module('plunker', []).controller('MainCtrl', function($scope, $http) {  
+  $http.get("https://api.github.com/users/white-label-development").then(
+    function(response){
+      $scope.user = response.data;
+    });
+  $scope.message = 'Hello from ng';
 });
 
 //html
@@ -74,6 +74,29 @@ $scope.message = 'Hello from ng';
 </body>
 ```
 
+Wrap the anguar module in an IEFE and refactor to a different format, for completeness
+```
+(function() {
+
+  var app = angular.module("githubViewer", []);
+  var MainController = function($scope, $http) {
+    var onUserComplete = function(response) {
+      $scope.user = response.data;
+    };
+
+    var onError = function(reason) {
+      $scope.error = "Could not fetch the user";
+    };
+
+
+    $http.get("https://api.github.com/users/robconery").then(onUserComplete, onError);
+    $scope.message = "Hello, Angular!";
+  };
+  
+  app.controller("MainController", ["$scope", "$http", MainController]);
+}());
+```
+### Directives and Views
 
 
 
