@@ -205,8 +205,17 @@ ng-hide="!usTruthy"
 There are 50+ built in directives. Plus many custom open-source directives
 
 
+### Services ($http etc + custom services)
 
+Used by Controllers, Models, Directives (not Views ofc)
 
+$timeout and $interval wrap the vanilla javascript functions (they work better with ng and it's data). $interval is a function, unlike $http.
+
+$log service (log, info, error, warn, debug): `$log.info('foo');`
+
+stopped @5.Custome Services , 210120
+
+UI Related Services wrap functionality like location, browser, window, anchorScroll, animate etc.
 
 
 
