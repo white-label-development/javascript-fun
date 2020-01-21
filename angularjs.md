@@ -104,6 +104,8 @@ Wrap the anguar module in an IEFE and refactor to a different format, for comple
   var app = angular.module("githubViewer", []);
 
   var MainController = function($scope, $http) {
+  
+    // go and get a sub property using the url returned from the first call
     var onUserComplete = function(response) {
       $scope.user = response.data;
       $http.get($scope.user.repos_url)
@@ -111,7 +113,7 @@ Wrap the anguar module in an IEFE and refactor to a different format, for comple
     };
 
     var onRepos = function(response){      
-      $scope.repos = response.data;          
+      $scope.repos = response.data; // the users repos         
     };
 
     var onError = function(reason) {
@@ -154,10 +156,53 @@ Wrap the anguar module in an IEFE and refactor to a different format, for comple
 </html>
 ```
 
-Can move data deom the view into the model with ng-model. Can specify an expression `ng-model="username", ng will push the valie into scope as username (it will create scope.username)
+```
+// userdetails.html
+<div>
+    <h2>{{user.name}}</h2>
+    <img ng-src="http://www.gravatar.com/avatar/{{user.gravatar_id}}" title="{{user.name}}">Order:
+    <select ng-model="repoSortOrder">
+        <option value="+name">Name</option>
+        <option value="-stargazers_count">Stars</option>
+        <option value="+language">Language</option>
+    </select>
+</div>
 
 
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Stars</th>
+            <th>Language</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="repo in repos | orderBy:repoSortOrder">
+            <td>{{repo.name}}</td>
+            <td>{{repo.stargazers_count | number}}</td>
+            <td>{{repo.language}}</td>
+        </tr>
+    </tbody>
+</table>
+```
 
+Can move data deom the view into the model with ng-model. Can specify an expression `ng-model="username", ng will push the value into scope as username (it will create scope.username).
+
+Note use of :
+
+ng-include (html from another source)
+
+ng-repeat
+
+filters `{{repo.stargazers_count | number}}` transforming the count into a (formatted) number, eg: 1,234.56. Others include currency, json, orderBy, date, limitTo etc. + and - is an angular thing for the orderBy.
+
+ng-show="isTruthy"
+
+ng-hide="!usTruthy"
+
+
+There are 50+ built in directives. Plus many custom open-source directives
 
 
 
