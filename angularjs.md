@@ -98,7 +98,63 @@ Wrap the anguar module in an IEFE and refactor to a different format, for comple
 ```
 ### Directives and Views
 
+```
+(function() {
 
+  var app = angular.module("githubViewer", []);
+
+  var MainController = function($scope, $http) {
+    var onUserComplete = function(response) {
+      $scope.user = response.data;
+      $http.get($scope.user.repos_url)
+           .then(onRepos, onError);
+    };
+
+    var onRepos = function(response){      
+      $scope.repos = response.data;          
+    };
+
+    var onError = function(reason) {
+      $scope.error = "Could not fetch the data.";
+    };
+
+
+    $scope.search = function(username){
+        $http.get("https://api.github.com/users/" + username)
+          .then(onUserComplete, onError);
+    };
+
+    $scope.username = "angular";
+    $scope.message = "GitHub Viewer";
+    $scope.repoSortOrder = "-stargazers_count";
+  };
+  
+  app.controller("MainController", ["$scope", "$http", MainController]);
+}());
+```
+
+```
+<!DOCTYPE html>
+<html ng-app="githubViewer">
+<head>
+    <script data-require="angular.js@*" data-semver="1.3.0-beta.5" src="https://code.angularjs.org/1.3.0-beta.5/angular.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js"></script>
+</head>
+
+<body ng-controller="MainController">
+    <h1>{{message}}</h1>
+    <div>{{ error }}</div>
+    <form name="searchUser" ng-submit="search(username)">
+        <input type="search" required placeholder="Username to find" ng-model="username" />
+        <input type="submit" value="Search">
+    </form>
+    <div ng-include="'userdetails.html'" ng-show="user"></div>    
+</body>
+</html>
+```
+
+Can move data deom the view into the model with ng-model. Can specify an expression `ng-model="username", ng will push the valie into scope as username (it will create scope.username)
 
 
 
