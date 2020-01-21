@@ -7,8 +7,8 @@ script for angular.js
 ```
 <body ng-app="plunker" ng-cloak>
   <div ng-controller="MainCtrl">
-    <h1>Hello {{name}}</h1>
-    <p>Start editing and see your changes reflected here!</p>
+    <h1>Hello {{name}}</h1>    
+    <p>{{22/7}}</p>
   </div>
 </body>
 
@@ -16,6 +16,6 @@ script for angular.js
 import angular from 'angular';
 var myApp = angular.module('plunker', []);
 myApp.controller('MainCtrl', function($scope) {
-  $scope.name = 'Plunker123';
+  $scope.name = 'Pi';
 });
 ```
