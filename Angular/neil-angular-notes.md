@@ -694,52 +694,24 @@ availability: this.fb.group({
 
 ```
 
+### Decorators
+Decorate a class (add features without changing the class itself). Can take arguments.
 
+#### Javascript modules
 
+```
+// utils.ts 
+function square(x) { return Math.pow(x,2) }
+function cow() { console.log("Mooooo!!!") }
+export {square, cow}; // {square, cow} is just destructuring syntax
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```
+// script.ts 
+import {square, cow} from './utils';
+console.log(square(2));
+cow()
+```
 
 ## RxJs
 
