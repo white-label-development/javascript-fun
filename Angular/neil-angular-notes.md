@@ -300,8 +300,41 @@ doAsyncTask().then(
 );
 ```
 
+```
+let error = true; // always fail
+function doAsyncTask() { 
+  return new Promise((resolve, reject) => { 
+    setTimeout(() => { 
+      if (error) { 
+        reject('error !!'); 
+      } else { 
+        resolve('done !!'); 
+      } 
+    }, 1000); 
+  });
+}
 
-(pluralsight - typescript getting started)
+// then can take two arguments: the success and error handlers
+doAsyncTask().then( 
+  (val) => console.log(val),   
+  (err) => console.error(err)
+);
+// outputs 'error !!' in console
+```
+
+```
+let promise = Promise.resolve('done'); // we can immediately resolve a promise
+let promise = Promise.reject('fail'); // .then still calls the success handler, even when used after the immediate resolve.
+```
+
+```
+Promise.resolve('done')   
+  .then((val) => {throw new Error("fail")})   
+  .then((val) => console.log(val))   
+  .catch((err) => console.error(err)); // we can chain handlers
+```
+
+#### (pluralsight - typescript getting started)
 
 mod2:
 
