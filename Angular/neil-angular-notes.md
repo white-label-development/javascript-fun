@@ -334,7 +334,7 @@ Promise.resolve('done')  
   .catch((err) => console.error(err)); // we can chain handlers
 ```
 
-#### (pluralsight - typescript getting started)
+### (pluralsight - typescript getting started)
 
 mod2:
 
@@ -491,7 +491,7 @@ if an access modifer is used in a ctor, typescript will create the property on t
 
 mod6
 
-Typescript module syntax
+##### Typescript module syntax
 
 Can tell the TypeScript compiler which module system to use (AMD, CommonJS, ES2015 etc). May also need some Loader or Bundler (Node, RequireJS, SystemJS, Webpack etc).
 
@@ -528,6 +528,26 @@ classic: looks for .ts and .d.ts files. for non-relative will start in current a
 node: first looks for .ts, .tsx. .d.ts, then reads package.json and looks for typings property. failing that looks for index files
 
 tip: setting `traceResolution: true` in tsConfig `comilerOptions` can be used to debug not found modules. also, tsConfig `baseUrl` for default non-relatve dir to search for modules. `paths` module to array of paths. `rootDirs` for ???.
+
+
+##### modules
+
+```
+// utils.ts 
+function square(x) { return Math.pow(x,2) }
+function cow() { console.log("Mooooo!!!") }
+export {square, cow}; // {square, cow} is just destructuring syntax
+```
+
+```
+// script.ts 
+import {square, cow} from './utils';
+console.log(square(2));
+cow()
+```
+
+#### Decorators
+Decorate a class (add features without changing the class itself). Can take arguments.
 
 
 
@@ -694,24 +714,7 @@ availability: this.fb.group({
 
 ```
 
-### Decorators
-Decorate a class (add features without changing the class itself). Can take arguments.
 
-#### Javascript modules
-
-```
-// utils.ts 
-function square(x) { return Math.pow(x,2) }
-function cow() { console.log("Mooooo!!!") }
-export {square, cow}; // {square, cow} is just destructuring syntax
-```
-
-```
-// script.ts 
-import {square, cow} from './utils';
-console.log(square(2));
-cow()
-```
 
 ## RxJs
 
