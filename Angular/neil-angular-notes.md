@@ -30,6 +30,31 @@ Event binding is done by using ( ) around the event,eg: `<button (click)="share(
 `[(ng-model)] ="property"`
 
 
+### Components
+
+An Angular application is just a tree of  Components, when each Component renders, it recursively renders its children Components. The bootstrap = the root component.
+
+When architecting an Angular application, we are breaking it down into seperate components, describing the responsibilities of each. From their we can consider the inputs & outputs (the public facing interface).
+
+with one way data binding, inputs go down the tree, outputs go up the tree.
+
+
+##### Content Projection
+come back to this if needed. `<ng-content></ng-content>`
+
+
+### Lifecycle Hooks
+
+##### component hooks
+`constructor` This is invoked when Angular creates a component or directive by calling new on the class.
+
+`ngOnChanges` Invoked every time there is a change in one of th input properties of the component.
+
+`ngOnInit` Invoked when given component has been initialized. This hook is only called once after the first ngOnChanges
+
+`ngDoCheck` Invoked when the change detector of the given component is invoked. It allows us to implement our own change detection algorithm for the given component.
+
+`ngOnDestroy` This method will be invoked just before Angular destroys the component. Use this hook to unsubscribe observables and detach event handlers to avoid memory leaks.
 
 ### Routing
 app.module.ts imports a RouterModule.
@@ -52,7 +77,7 @@ ng serve --open
 https://angular.io/tutorial/toh-pt6
 
 
-`ng generate service hero` notice the the @Injectable() decorator
+`ng generate service hero` notice the the @Injectable() decorator  `ng generate <scaffold> <name>` where scaffold is the type of things we can create, such as component, directive, pipe, service, class, interface, enum
 
 `HeroService.getHeroes()` must have an asynchronous signature of some kind. It can take a callback. It could return a Promise. It could return an Observable.
 
@@ -552,6 +577,9 @@ Decorate a class (add features without changing the class itself). Can take argu
 
 
 
+
+
+
 ## Reactive Forms
 
 https://github.com/DeborahK/Angular-ReactiveForms
@@ -620,6 +648,8 @@ We create the formModel ourselves. The template has a lot let Ng attributes.
 <form (ngSubmit)="save()" [formGroup]="signupForm")>
   <input formControlName="firstName"> ...
 ```
+
+
 ##### Building a Reactive Form
 
 Form does not directly modify the FormModel.
@@ -714,11 +744,28 @@ availability: this.fb.group({
 
 ```
 
+## The CLI
+
+`ng build --prod` bundles into dist
+
+`npm install moment --save` example of adding a third party library module
+
+`ng help` for info
+
 
 
 ## RxJs
 
 https://angularfirebase.com/lessons/sharing-data-between-angular-components-four-methods/
+
+
+
+
+
+
+
+
+
 
 
 ## AFTOP: Jokes Notes
