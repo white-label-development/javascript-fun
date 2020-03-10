@@ -595,7 +595,7 @@ defining form model and validation in component code.
 + more flexible
 + immutable data model. no data binding. form cannot mutate model
 + easier to perform an action on a value change
-+ reactive transformations -> DebountTime or DistinctUntilChanged
++ reactive transformations -> DebounceTime or DistinctUntilChanged
 + easily add input elements dynamically
 + easier unit testing.
 + but requires more code.
@@ -603,9 +603,9 @@ defining form model and validation in component code.
 
 ##### Form and InputElement State: 
 
-+ Value Changed :pristine or dirty (dirty = chnanged. if all are pristine, the form is pristine)
++ Value Changed :pristine or dirty (dirty = changed. if all are pristine, the form is pristine)
 
-+ Validity: valid or errors collection (form is valid id all input elements are valid)
++ Validity: valid or errors collection (form is valid if all input elements are valid)
 
 + Visited: touched or untouched (touched - focus has been set and focus left)
 
@@ -620,13 +620,13 @@ The FormModel is a data structure that represents the form: FormControls, State,
 
 Template Driven Form generate the FormModel from the template (behind the scenes) but Reactive Forms explicity create the Form model, validation rules and so on, all in the Component Class.
 
-Reactive Froms bind thes input elements in the template to the FormModel defined in the component class, instead  if binding the input elements to the data model properties directly (like Template Driven Forms do).
+Reactive Froms bind these input elements in the template to the FormModel defined in the component class, instead of binding the input elements to the data model properties directly (like Template Driven Forms do).
 
-##### Directives
 
-Template (FormsModule): 
 
-ngForm, ngModel, ngModelGroup. Ng automatically creates a formModel, starting with the root FormGroup instance; it assigns an ngForm directive to any form we add to the template. We can add a template reference to access it (to export it), eg:
+##### Template (FormsModule): 
+
+`ngForm, ngModel, ngModelGroup`: Ng automatically creates a formModel, starting with the root FormGroup instance; it assigns an ngForm directive to any form we add to the template. We can add a template reference to access it (to export it), eg:
 
 ```
 <form (ngSubmit)="save()" #signupForm="ngForm">
@@ -638,19 +638,20 @@ ngForm, ngModel, ngModelGroup. Ng automatically creates a formModel, starting wi
 
 The signupForm variable provides a reference to the forms root FormGroup instance. The ngModel directive is used in each input element to keep the value in sync with the component class property (MVVM, two way binding paradigm). Adding the ngModel tells Ng to automatically create a FormControl instance for us, using the input elements name.
 
-Reactive (ReactiveFormsModule):
+##### Reactive (ReactiveFormsModule):
 
-formGroup, fromControl, formControlName, FormGroupName, formArrayName
+`formGroup, fromControl, formControlName, FormGroupName, formArrayName`
 
-We create the formModel ourselves. The template has a lot let Ng attributes.
+We create the formModel ourselves. 
+
+Commonly a FormBuilder is provided in the ctor, which is used to build the form from the fromGroups and formControls we have defined.
+
+The template has a lot let Ng attributes.
 
 ```
 <form (ngSubmit)="save()" [formGroup]="signupForm")>
   <input formControlName="firstName"> ...
 ```
-
-
-##### Building a Reactive Form
 
 Form does not directly modify the FormModel.
 
@@ -668,7 +669,7 @@ Without two-way binding how do we update the form from it's initial values?
 this.customerForm.setValue(
   {
     firstName: 'Jack',
-    firstName: 'Harkness'
+    lastName: 'Harkness'
   }
 );
 ```
@@ -703,7 +704,7 @@ myControl.setValidators(Validators.email);
 myControl.updateValueAndValidity(); //optional. apply the new validators (ie: check is valid against the value)
 ```
 
-Customer Validation Rules:
+Custom Validation Rules:
 
 A custom validator is a function
 
@@ -744,6 +745,33 @@ availability: this.fb.group({
 
 ```
 
+(revisiting the concepts)
+
+We create a form instance on our component, this instance exposes an observable, a stream of all the input fields combined into a object, via it’s valueChanges property. We can subscribe to that observable and print our the current value of the form, like so:
+```
+ constructor(fb: FormBuilder) {     
+   this.form = fb.group({
+     "comment": this.comment,      
+     "name": this.name,       
+     "email": this.email
+   });     
+   this.form.valueChanges.subscribe(data => console.log(JSON.stringify(data)));   
+   
+   //as "f" is entered into comment we get {"comment":"f","name":"","email":""} 
+   //as "o" is entered into comment we get {"comment":"fo","name":"","email":""} 
+ }
+```
+
+The above example produces lots of noise. we can improve this using filter.  filter accepts a function and passes to it each item in the stream, if the function returns true filter publishes the input item to the output stream.
+```
+this.form.valueChanges.filter(data => this.form.valid).subscribe(data => console.log(JSON.stringify(data)));
+
+// filter only publishes the outputstream the lambda is true - ie: if comment, name, email are all valid = form is valid.
+```
+
+
+
+
 ## The CLI
 
 `ng build --prod` bundles into dist
@@ -772,6 +800,16 @@ obs.subscribe(value => console.log("Subscriber: " + value)); // The observable w
 
 // will output Subscriber: 0 Subscriber: 1 Subscriber: 2 .. to 30
 ```
+
+### RxJs In Angular
+
+EventEmitter - Under the hood this works via Observables.
+HTTP - HTTP requests in Angular are all handled via Observables.
+Forms - Reactive forms in Angular expose an observable, a stream of all the input fields in the form combined.
+
+
+
+
 
 
 
