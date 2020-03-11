@@ -769,12 +769,18 @@ this.form.valueChanges.filter(data => this.form.valid).subscribe(data => console
 // filter only publishes the outputstream the lambda is true - ie: if comment, name, email are all valid = form is valid.
 ```
 
-and here's a map example as I forgot the syntax last time (what is returned from a map goes into the output stream)
+and here's a (double) map example as I forgot the syntax last time (what is returned from a map goes into the output stream)
 ```
+//first map strips script tags; second map adds a new property to data (cool...)
  this.form.valueChanges .filter(data => this.form.valid)         
    .map(data => {data.comment = data.comment.replace(/<(?:.|\n)*?>/gm, '');           
-   return data         
-   }).subscribe(data => console.log(JSON.stringify(data)));
+     return data         
+   })
+   .map(data => {          
+     data.lastUpdateTS = new Date();            
+     return data         
+   }) 
+   .subscribe(data => console.log(JSON.stringify(data)));
 ```
 
 
