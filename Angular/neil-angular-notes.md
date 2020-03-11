@@ -783,6 +783,17 @@ and here's a (double) map example as I forgot the syntax last time (what is retu
    .subscribe(data => console.log(JSON.stringify(data)));
 ```
 
+The above can be down without observables and reactive programming (and in this example is arguably the better way). Reactive has more power due to it's operators (debounce etc)
+```
+this.form.valueChanges         
+  .subscribe( data => {           
+    if (this.form.valid) {             
+      data.comment = data.comment.replace(/<(?:.|\n)*?>/gm, '');             
+      data.lastUpdateTS = new Date();             
+      console.log(JSON.stringify(data))           
+    }         
+});
+```
 
 
 ## The CLI
@@ -829,7 +840,10 @@ Forms - Reactive forms in Angular expose an observable, a stream of all the inpu
 
 
 
+## Pipes
+eg: json, currency, slice, date, number, lowercase, uppercase, percent and custom pipes.
 
+@async pipe @308 actual
 
 
 
