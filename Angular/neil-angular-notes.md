@@ -809,6 +809,7 @@ this.form.valueChanges  
 ## RxJs
 
 https://angularfirebase.com/lessons/sharing-data-between-angular-components-four-methods/
+https://jasonwatmore.com/post/2019/02/07/angular-7-communicating-between-components-with-observable-subject
 
 Define the different streams and the operations that are performed on those streams.
 
