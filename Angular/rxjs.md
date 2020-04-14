@@ -29,12 +29,10 @@ Forms - Reactive forms in Angular expose an observable, a stream of all the inpu
 
 
 
-
-
-
-
-
 ## Pipes
 eg: json, currency, slice, date, number, lowercase, uppercase, percent and custom pipes.
 
-@async pipe @308 actual
+With AsyncPipe we can use promises and observables directly in our template, without having to store the result on an intermediate property or variable.
+
+AsyncPipe accepts as argument an observable or a promise, calls subcribe or attaches a then handler, then waits for the asynchronous result before passing it through to the caller.
+
