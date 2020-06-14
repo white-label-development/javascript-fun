@@ -1,0 +1,9 @@
+{
+    // "eslint.validate": [
+    //     {"language": "html", "autoFix": true},
+    //     {"language": "vue", "autoFix": true},
+    //     {"language": "javascript", "autoFix": true}
+    // ],
+    //"editor.codeActionsOnSave": "source.FixAll.esLint",
+    //"eslint.autoFixOnSave": true,
+}
