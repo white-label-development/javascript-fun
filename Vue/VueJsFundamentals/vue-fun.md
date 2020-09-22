@@ -1,10 +1,12 @@
 # Vue Fundamentals
 
+[Helper repo](https://github.com/jmcooper/vuejs-fundamentals)
+
 ## 2 Getting Started
 
 `new Vue()` = a new Vue instance.
 
-`new Vue({render: h => h(App)})` // Vue wraps a router0view containing components
+`new Vue({render: h => h(App)})` // Vue wraps a router-view containing components
 
 (installed nvm from github to manage node versions)
 
@@ -51,7 +53,7 @@ RobotBuilder.vue demonstrates some of the template syntax such as `v-if`, and
 </tr>
 ```
 
-Angular style bindings / interpolation `{{selectedRobot.head.title}}` 
+Angular style bindings / interpolation `{{selectedRobot.head.title}}`
 
 and `<div :class="[saleBorderClass, 'top', 'part']">` which is an array of classes to add
 
@@ -87,6 +89,8 @@ export default {
   name: 'RobotBuilder',
   created(){ console.log('component created event fired');}
 ```
+
+See Vue docs lifecycle diagram.
 
 Mixins are a way to share functionality across multiple components. See file created-hook-mixin.js and it's import in RobotBuilder.vue (and in theory in other components). Works for computed properties and other stuff (not just a lifecyle hook thing)
 
