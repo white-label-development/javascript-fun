@@ -95,3 +95,37 @@ See Vue docs lifecycle diagram.
 Mixins are a way to share functionality across multiple components. See file created-hook-mixin.js and it's import in RobotBuilder.vue (and in theory in other components). Works for computed properties and other stuff (not just a lifecyle hook thing)
 
 ## 4 Enabling Inter-component Communications
+
+Create `PartsSelector.vue` as a components for rendering the robot parts, thereby removing a lot of very similar duplicated code.
+
+### Passing data into a child component
+
+`<PartSelector :parts="availableParts.heads" position="top" />` then in PartsSelector define the props using a string array `props: ['parts','position'],`. This allows `this.parts` to work. Note that position does not have a colon prefix. This is because position is not a binding, it's just an attribute of the PartSelector with a hardcoded value (as opposed to an expression that needs to be evaluated, like availableParts.x)
+
+A better props definition includes validation. `props: ['parts', 'position'],` becomes
+
+```javascript
+props: {
+    parts: { type: Array, required: true },
+    position: {
+      type: String,
+      required: true,
+      validator(value) {
+        return ['left', 'right', 'top', 'bottom', 'center'].includes(value);
+      },
+    },
+  },
+```
+
+### Passing data up into a parent component
+
+Each view component has an emit function. `this.$emit('partSelected');`. The parent component binds to this.
+
+```
+<PartSelector :parts="availableParts.heads" position="top"
+  @partSelected="part => selectedRobot.head=part" />
+```
+The event handler here is simple enough to be done inline. Larger would require calling a method.
+
+At this point, changing a robot part and clicking Add To Cart works, but if there is no changed part the value has not been set. A Component Lifecycle Hook is a good option here:
+

@@ -14,7 +14,8 @@
         <button @click="selectPreviousHead()" class="prev-selector">&#9668;</button>
         <button @click="selectNextHead()" class="next-selector">&#9658;</button> -->
 
-        <PartSelector />
+        <PartSelector :parts="availableParts.heads" position="top"
+          @partSelected="part => selectedRobot.head=part" />
       <!-- </div> -->
     </div>
     <div class="middle-row">
@@ -34,9 +35,15 @@
         <button @click="selectNextRightArm()" class="next-selector">&#9660;</button>
       </div> -->
 
-      <PartSelector />
-      <PartSelector />
-      <PartSelector />
+      <PartSelector :parts="availableParts.arms" position="left"
+        @partSelected="part => selectedRobot.leftArm=part" />
+
+      <PartSelector :parts="availableParts.torsos" position="center"
+        @partSelected="part => selectedRobot.torso=part" />
+
+      <PartSelector :parts="availableParts.arms" position="right"
+        @partSelected="part => selectedRobot.rightArm=part" />
+
     </div>
     <div class="bottom-row">
       <!-- <div class="bottom part">
@@ -44,7 +51,8 @@
         <button @click="selectPreviousBase()" class="prev-selector">&#9668;</button>
         <button @click="selectNextBase()" class="next-selector">&#9658;</button>
       </div> -->
-      <PartSelector />
+      <PartSelector :parts="availableParts.bases" position="bottom"
+        @partSelected="part => selectedRobot.base=part" />
     </div>
     <div>
       <h1>Cart</h1>

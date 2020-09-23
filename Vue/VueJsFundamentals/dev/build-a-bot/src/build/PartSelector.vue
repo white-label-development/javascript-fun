@@ -1,5 +1,5 @@
 <template>
-  <div class="part">
+  <div class="part" :class="position">
     <img :src="selectedPart.src" title="arm"/>
     <button @click="selectPreviousPart()" class="prev-selector"></button>
     <button @click="selectNextPart()" class="next-selector"></button>
@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import availableParts from '../data/parts';
 
-const parts = availableParts.heads; // temp. this will be passed in from parent later.
+// import availableParts from '../data/parts'; // no longer neeed this as passed in from parent
+// const parts = availableParts.heads; // this will be passed in from parent later. see :parts=
 
 function getPreviousValidIndex(index, length) {
   const deprecatedIndex = index - 1;
@@ -23,28 +23,47 @@ function getNextValidIndex(index, length) {
 }
 
 export default {
+//   props: ['parts', 'position'],
+  props: {
+    parts: { type: Array, required: true },
+    position: {
+      type: String,
+      required: true,
+      validator(value) {
+        return ['left', 'right', 'top', 'bottom', 'center'].includes(value);
+      },
+    },
+  },
   data() {
     return { selectedPartIndex: 0 };
   },
   computed: {
     selectedPart() {
-      return parts[this.selectedPartIndex];
+      return this.parts[this.selectedPartIndex];
     },
   },
+  created() {
+    this.emitSelectedPart();
+  },
   methods: {
+    emitSelectedPart() {
+      this.$emit('partSelected', this.selectedPart);
+    },
     selectNextPart() {
       this.selectedPartIndex = getNextValidIndex(
         this.selectedPartIndex,
-        parts.length,
+        this.parts.length,
       );
+      this.$emit('partSelected', this.selectedPart); // v1
     },
     selectPreviousPart() {
       this.selectedPartIndex = getPreviousValidIndex(
         this.selectedPartIndex,
-        parts.length,
+        this.parts.length,
       );
+      // this.$emit('partSelected', this.selectedPart);
+      this.emitSelectedPart(); // keep things dryish
     },
-
   },
 };
 
