@@ -121,13 +121,32 @@ props: {
 
 Each view component has an emit function. `this.$emit('partSelected');`. The parent component binds to this.
 
-```
+```javascript
 <PartSelector :parts="availableParts.heads" position="top"
   @partSelected="part => selectedRobot.head=part" />
 ```
+
 The event handler here is simple enough to be done inline. Larger would require calling a method.
 
-At this point, changing a robot part and clicking Add To Cart works, but if there is no changed part the value has not been set. A Component Lifecycle Hook is a good option here ... see `created()` hook.
+At this point, changing a robot part and clicking Add To Cart works, but if there is no changed part the value has not been set. A Component Lifecycle Hook is a good option here ... 
+
+```javascript
+ created() {
+    this.emitSelectedPart();
+  },
+```
+
+but even better would be to use update, which is raised each time the data changes.
+We still need created for the intial render though.
+
+```javascript
+updated() {
+    this.emitSelectedPart();
+  },
+```
 
 In the demo the preview is added to prove that the data (selectd part) is passed to the parent.
 
+### injecting content into a component
+
+Re-usable CollapsibleSection component
