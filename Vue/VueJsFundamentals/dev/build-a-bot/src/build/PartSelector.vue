@@ -45,6 +45,9 @@ export default {
   created() {
     this.emitSelectedPart();
   },
+  updated() {
+    this.emitSelectedPart();
+  },
   methods: {
     emitSelectedPart() {
       this.$emit('partSelected', this.selectedPart);
@@ -61,8 +64,8 @@ export default {
         this.selectedPartIndex,
         this.parts.length,
       );
-      // this.$emit('partSelected', this.selectedPart);
-      this.emitSelectedPart(); // keep things dryish
+      // this.$emit('partSelected', this.selectedPart); // v1
+      // this.emitSelectedPart(); // v2 keep things dryish .. in v3 we comment this out because it's already handled by updated() hook
     },
   },
 };

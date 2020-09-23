@@ -127,5 +127,7 @@ Each view component has an emit function. `this.$emit('partSelected');`. The par
 ```
 The event handler here is simple enough to be done inline. Larger would require calling a method.
 
-At this point, changing a robot part and clicking Add To Cart works, but if there is no changed part the value has not been set. A Component Lifecycle Hook is a good option here:
+At this point, changing a robot part and clicking Add To Cart works, but if there is no changed part the value has not been set. A Component Lifecycle Hook is a good option here ... see `created()` hook.
+
+In the demo the preview is added to prove that the data (selectd part) is passed to the parent.
 
