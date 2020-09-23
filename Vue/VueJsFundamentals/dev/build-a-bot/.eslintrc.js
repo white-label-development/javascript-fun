@@ -14,5 +14,13 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'linebreak-style': 0,
+    'max-len': 'off'
   },
+  // overrides: [
+  //   {
+  //     rules: {
+  //       'max-len': 'off' // disables line length check tried: 'max-len': ["error", { "code": 200 }]
+  //     }
+  //   }
+  // ]
 };
