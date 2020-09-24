@@ -268,3 +268,35 @@ In demo going to add a sidebar. App.vue gets updated to have 2 router-views, and
   },
 },
 ```
+
+### HTML5 History Mode (removes url # signs stuff)
+
+Just add `mode: 'history'` to Router config (above `routes:[]`).
+
+Problem: bookmaked pages / pasted urls now don't work. 
+
+Solution: tell server to always load the main index.html whenever a url like /parts/heads/1 is requested. See Vue HTML5 History mode docs for details.
+
+### Navigation Guards (prevent page from loading or user from leaving)
+
+Stop /parts/heads/IAmInvalidAsNotAnId
+
+Can add the guard to a component or a route.
+
+```javascript
+{
+  path: '/parts/:partType/:id',
+  name: 'Parts',
+  component: PartInfo,
+  props: true,
+  beforeEnter(to, from, next) {
+    const isValid = Number.isInteger(Number(to.params.id));
+    next(isValid); // will prevent navigation if not valid
+  },
+},
+```
+
+Lets stop the user abandoning a half build robot with beforeRouteLeave on the component.
+See RobotBuilder.vue `beforeRouteLeave`
+
+
