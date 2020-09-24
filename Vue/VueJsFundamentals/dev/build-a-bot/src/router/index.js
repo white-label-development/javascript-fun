@@ -11,6 +11,11 @@ export default new Router({
   routes: [
     { path: '/', name: 'Home', component: HomePage },
     { path: '/build', name: 'Build', component: RobotBuilder },
-    { path: '/parts/:partType/:id', name: 'Parts', component: PartInfo },
+    {
+      path: '/parts/:partType/:id',
+      name: 'Parts',
+      component: PartInfo,
+      props: true,
+    },
   ],
 });

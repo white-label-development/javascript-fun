@@ -209,3 +209,20 @@ return parts[partType].find((part) => part.id === +id);
 ```
 
 An alt syntax to @click would be to wrap the img in a router-link.
+
+Also, in PartInfo.vue
+
+```javascript
+const { partType, id } = this.$route.params;
+// a downside of this is this component is now coupled to the router. Better to pass the partType and id as props.
+```
+
+so..`{ path: '/parts/:partType/:id', name: 'Parts', component: PartInfo, props: true, },`
+
+and the old destructuring from the router, instead uses this
+
+```javascript
+props: ['partType', 'id'], // declare the props
+...
+const { partType, id } = this // can now get the props from this
+```
