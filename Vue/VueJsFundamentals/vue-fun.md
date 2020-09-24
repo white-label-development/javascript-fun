@@ -226,3 +226,45 @@ props: ['partType', 'id'], // declare the props
 ...
 const { partType, id } = this // can now get the props from this
 ```
+
+### Nested Routes (parent/child)
+
+In demo going to add /browse page which has /browse/Arms etc. The bottom half of the  page will change according to the sub-route of browse. uses another `<router-view />` and defines child routes in /route
+
+```javascript{
+  path: '/parts/browse',
+  name: 'BrowseParts',
+  component: BrowseParts,
+  children: [
+    { path: 'BrowseArms', name: 'arms', component: RobotArms },
+    { path: 'BrowseBases', name: 'bases', component: RobotBases },
+    { path: 'BrowseHeads', name: 'heads', component: RobotHeads },
+    { path: 'BrowseTorsos', name: 'torsos', component: RobotTorsos },
+  ],
+},
+```
+
+add /parts/BrowseParts.vue and the sub-pages RobotArms.vue etc... see code 
+
+### Name Views (aka Sibling routes)
+
+In demo going to add a sidebar. App.vue gets updated to have 2 router-views, and we use the router to define which does what:
+
+```javascript
+{
+  path: '/',
+  name: 'Home',
+  components: {
+    default: HomePage,
+    sidebar: SidebarStandard,
+  },
+},
+{
+  path: '/build',
+  name: 'Build',
+  components: {
+    default: RobotBuilder,
+    sidebar: SidebarBuild,
+  },
+},
+```
