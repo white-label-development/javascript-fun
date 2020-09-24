@@ -20,7 +20,7 @@
 
 VS Code extensions: ESlint, vue, Vetur, Beautify, jshint
 
-Note: used `npm run lint -- --fix` to correct trailing spaces. neat!
+Note: used `npm run lint --fix` to correct trailing spaces. neat!
 
 `npm run serve` ... http://localhost:8080/
 
@@ -149,4 +149,63 @@ In the demo the preview is added to prove that the data (selectd part) is passed
 
 ### injecting content into a component
 
-Re-usable CollapsibleSection component
+Re-usable CollapsibleSection component. Note use of `<slot></slot>` which has the html of the parent component injected into it from the template.
+
+## 5 Routing from Page to Page
+
+`npm install vue-router --save`
+
+add router/index.js which imports Router. We can then configure the routes.
+
+import router from /.router and inject into new Vue()
+
+in App.vue add '<router-view />' which is the Vue component that is the container for rendered route
+
+use route name: `<router-link class="nav-link" :to="{ name: 'Home' }"> ...`
+
+use path: `<router-link to="/build">`
+
+can create styles that are applied to routes
+
+```vue
+<router-link class="nav-link" :to="{ name: 'Build' }" exact>Build</router-link>
+...
+.router-link-active {
+  /* this is a special vue class (convention) */
+  color: #fff;
+}
+```
+
+or for custom names use `<router-link active-class="foo" ...`
+
+From code:
+
+Added `parts/PartInfo.vue` for this example. In PartSelector make a click event that routes
+
+`<img @click="showPartInfo()" ...` where `methods:` contains
+
+```javascript
+showPartInfo() {
+  this.$router.push('/parts');
+},
+```
+
+This achieves a (useless) hardcoded version, but we want params in the route so we can display info on the part that was clicked:
+
+update the url route: `{ path: '/parts/:partType/:id', name: 'Parts', component: PartInfo },` eg: /parts/heads/4
+
+```javascript
+showPartInfo() {
+  const { id, type } = this.selectedPart;
+  this.$router.push({ name: 'Parts', params: { id, partType: type } });
+},
+```
+
+and PartsInfo.vue can pull routes params and use them to quert parts (from /data/parts.js)
+
+```javascript
+const { partType, id } = this.$route.params;
+return parts[partType].find((part) => part.id === +id);
+```
+
+An alt syntax to @click would be to wrap the img in a router-link.

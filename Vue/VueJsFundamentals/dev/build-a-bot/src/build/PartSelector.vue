@@ -1,6 +1,6 @@
 <template>
   <div class="part" :class="position">
-    <img :src="selectedPart.src" title="arm"/>
+    <img @click="showPartInfo()" :src="selectedPart.src" title="xxx"/>
     <button @click="selectPreviousPart()" class="prev-selector"></button>
     <button @click="selectNextPart()" class="next-selector"></button>
     <span class="sale" v-show="selectedPart.onSale">Sale!</span>
@@ -49,6 +49,12 @@ export default {
     this.emitSelectedPart();
   },
   methods: {
+    showPartInfo() {
+      const { id, type } = this.selectedPart;
+
+      // this.$router.push(`/parts/${type}/${id}`); // rather than interpolate, use the object syntax
+      this.$router.push({ name: 'Parts', params: { id, partType: type } });
+    },
     emitSelectedPart() {
       this.$emit('partSelected', this.selectedPart);
     },
@@ -99,6 +105,7 @@ export default {
 .part {
   img {
     width:165px; /* this is an scss example */
+    cursor:pointer;
   }
 }
 .top {
