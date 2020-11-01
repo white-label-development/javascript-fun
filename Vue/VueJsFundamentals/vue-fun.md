@@ -46,7 +46,7 @@ So begins with /public/index.html which is the top level html that contains the 
 
 RobotBuilder.vue demonstrates some of the template syntax such as `v-if`, and
 
-```vue
+```javascript
 <tr v-for="(robot, index) in cart" :key="index">
     <td>{{robot.head.title}}</td>
     <td class="cost">{{robot.cost}}</td>
@@ -128,7 +128,7 @@ Each view component has an emit function. `this.$emit('partSelected');`. The par
 
 The event handler here is simple enough to be done inline. Larger would require calling a method.
 
-At this point, changing a robot part and clicking Add To Cart works, but if there is no changed part the value has not been set. A Component Lifecycle Hook is a good option here ... 
+At this point, changing a robot part and clicking Add To Cart works, but if there is no changed part the value has not been set. A Component Lifecycle Hook is a good option here ...
 
 ```javascript
  created() {
@@ -159,7 +159,7 @@ add router/index.js which imports Router. We can then configure the routes.
 
 import router from /.router and inject into new Vue()
 
-in App.vue add '<router-view />' which is the Vue component that is the container for rendered route
+in App.vue add `<router-view />` which is the Vue component that is the container for rendered route
 
 use route name: `<router-link class="nav-link" :to="{ name: 'Home' }"> ...`
 
@@ -201,7 +201,7 @@ showPartInfo() {
 },
 ```
 
-and PartsInfo.vue can pull routes params and use them to quert parts (from /data/parts.js)
+and PartsInfo.vue can pull routes params and use them to query parts (from /data/parts.js)
 
 ```javascript
 const { partType, id } = this.$route.params;
@@ -244,7 +244,7 @@ In demo going to add /browse page which has /browse/Arms etc. The bottom half of
 },
 ```
 
-add /parts/BrowseParts.vue and the sub-pages RobotArms.vue etc... see code 
+add /parts/BrowseParts.vue and the sub-pages RobotArms.vue etc... see code
 
 ### Name Views (aka Sibling routes)
 
@@ -273,7 +273,7 @@ In demo going to add a sidebar. App.vue gets updated to have 2 router-views, and
 
 Just add `mode: 'history'` to Router config (above `routes:[]`).
 
-Problem: bookmaked pages / pasted urls now don't work. 
+Problem: bookmaked pages / pasted urls now don't work.
 
 Solution: tell server to always load the main index.html whenever a url like /parts/heads/1 is requested. See Vue HTML5 History mode docs for details.
 
@@ -299,4 +299,93 @@ Can add the guard to a component or a route.
 Lets stop the user abandoning a half build robot with beforeRouteLeave on the component.
 See RobotBuilder.vue `beforeRouteLeave`
 
+## 6 Vuex
 
+State management store - shared state tree
+
+changes to data are done through mutations. sync.
+
+actions are async which commit to the store on completion.
+
+getters to get from the store, manipulate and return.
+
+`npm install vuex@3.0.1 --save` in demo. add `/store` folder index.js
+
+```javascript
+import Vue from 'vue';
+import Vuex from 'vuex';
+
+Vue.use(Vuex); // vue know we are using vuex
+
+// create a store. changes to data must happen through mutations. never change the store directly.
+export default new Vuex.Store({
+  state: {
+    cart: [],
+  },
+  mutations: {
+    addRobotToCart(state, robot) {
+      state.cart.push(robot);
+    },
+  },
+});
+```
+
+and update main.js vue instance with the
+
+```javascript
+new Vue({
+  render: (h) => h(App),
+  router,
+  store,
+}).$mount('#app');
+```
+
+The `Vuex.Store` gets populated from RobotBuilder AddToCart `this.$store.commit('addRobotToCart', Object.assign(...robot, { cost }));`
+
+We can see the contents of the store in the (new) `cart/ShoppingCart.vue` computed cart:
+
+```javascript
+tr v-for="(robot, index) in cart" :key="index"
+...
+
+ cart() {
+   return this.$store.state.cart; // get cart data from store and assign to cart
+ }
+```
+
+..abandonded code along here. just refer to Demos\m05-ManagingStateWithVuex\2 - after
+
+Vuex store actions ... use of axios to fetch data from api and pop store.
+
+```javascript
+actions: {
+    getParts({ commit }) {
+      axios.get('/api/parts')
+        .then(result => commit('updateParts', result.data))
+        .catch(console.error);
+    },
+    addRobotToCart({ commit, state }, robot) {
+      const cart = [...state.cart, robot];
+      return axios.post('/api/cart', cart)
+        .then(() => commit('addRobotToCart', robot));
+    },
+  }
+```
+
+`vue.config.js` use of vue proxy to get around CORS issue of accessing api on :8081 when app is on :8080
+
+with an async call need a v-if on the template to give data chance to load.
+
+note use of modules to break up the store
+
+```js
+modules: {
+    robots: robotsModule,
+    users: usersModule,
+  },
+
+  ...
+  return this.$store.state.robots.cart; // getter needs updating with the module name 'robots'
+```
+
+@6.9

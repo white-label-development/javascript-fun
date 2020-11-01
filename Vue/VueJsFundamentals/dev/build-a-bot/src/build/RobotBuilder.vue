@@ -184,7 +184,12 @@ export default {
         + robot.torso.cost
         + robot.rightArm.cost
         + robot.base.cost;
-      this.cart.push({ ...robot, cost });
+
+      // this.$store.commit('addRobotToCart', Object.assign({}, robot, { cost })); // linter prefers use of spread
+      const cartObj = Object.assign(robot, { cost });
+      this.$store.commit('addRobotToCart', cartObj);
+      // this.cart.push({ ...robot, cost }); // switcing from temp store in this to vuex ^^
+
       this.addedToCart = true;
     },
     //  moved to PartsSelector.vue
